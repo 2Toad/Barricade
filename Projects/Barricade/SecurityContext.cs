@@ -23,20 +23,20 @@ namespace Barricade
         public static string PasswordPepper { get; private set; }
 
         /// <summary>
-        /// The header used to verify the authenticity of access tokens.
-        /// </summary>
-        public static string AccessTokenHeader { get; private set; }
-
-        /// <summary>
         /// The encryption key used to secure bearer tokens.
         /// </summary>
         public static string BearerTokenKey { get; private set; }
 
         /// <summary>
-        /// The number of minutes users should remain cached. This is a sliding 
-        /// expiration that is reset each time the cached user is accessed.
+        /// The header used to verify the authenticity of access tokens.
         /// </summary>
-        public static int CacheDuration { get; private set; }
+        public static string AccessTokenHeader { get; private set; }
+
+        /// <summary>
+        /// The number of minutes authenticated access tokens should remain cached. This is a sliding 
+        /// expiration that is reset each time the cached access token is accessed.
+        /// </summary>
+        public static int AccessTokenCacheDuration { get; private set; }
 
         #endregion
 
@@ -44,20 +44,20 @@ namespace Barricade
         /// Configures the security context with application specific settings.
         /// </summary>
         /// <param name="passwordPepper">The pepper used to generate password hashes. This should be a minimum of 128-bits.</param>
-        /// <param name="accessTokenHeader">The header used to verify the authenticity of access tokens.</param>
         /// <param name="bearerTokenKey">The encryption key used to secure bearer tokens. This should be a minimum of 128-bits.</param>
-        /// <param name="cacheDuration">The number of minutes users should remain cached.</param>
-        public static void Configure(string passwordPepper, string accessTokenHeader, string bearerTokenKey, int cacheDuration)
+        /// <param name="accessTokenHeader">The header used to verify the authenticity of access tokens.</param>
+        /// <param name="accessTokenCacheDuration">The number of minutes authenticated access tokens should remain cached.</param>
+        public static void Configure(string passwordPepper, string bearerTokenKey, string accessTokenHeader, int accessTokenCacheDuration)
         {
             PasswordPepper = passwordPepper;
-            AccessTokenHeader = accessTokenHeader;
             BearerTokenKey = bearerTokenKey;
-            CacheDuration = cacheDuration;
+            AccessTokenHeader = accessTokenHeader;
+            AccessTokenCacheDuration = accessTokenCacheDuration;
         }
 
         /// <summary>
         /// Generates a bearer token for the specified user, and caches the
-        /// user for future access.
+        /// associated access token for future access.
         /// </summary>
         /// <param name="user">The user to login.</param>
         /// <returns>A unique bearer token.</returns>
@@ -66,7 +66,7 @@ namespace Barricade
             if (user == null) return null;
 
             Logout(user.AccessToken);
-            Cache.Add(user.AccessToken, user, CacheDuration, true);
+            Cache.Add(user.AccessToken, user, AccessTokenCacheDuration, true);
 
             return new TokenRequestResponse {
                 access_token = GenerateBearerToken(user.AccessToken),

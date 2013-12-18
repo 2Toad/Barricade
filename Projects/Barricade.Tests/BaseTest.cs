@@ -25,11 +25,11 @@ namespace Barricade.Tests
             // Do not use these settings in your application. These should
             // come from a config file.
             const string pepper = "5-6QGo7¼FlUQ/;cAÒqyjû]Ef0_m2K881";
-            const string accessTokenHeader = "EDA2AC9242B7463C8E4D28CDDF256FD9";
             const string bearerTokenKey = "ø3sDÝvK¦yg9Oy`OZÿ9I1¿Ù6nB}06N7dd";
-            const int cacheDuration = 5;
+            const string accessTokenHeader = "EDA2AC9242B7463C8E4D28CDDF256FD9";
+            const int accessTokenCacheDuration = 5;
 
-            SecurityContext.Configure(pepper, bearerTokenKey, accessTokenHeader, cacheDuration);
+            SecurityContext.Configure(pepper, bearerTokenKey, accessTokenHeader, accessTokenCacheDuration);
         }
     }
 }
