@@ -19,5 +19,5 @@ using System.Reflection;
 [assembly: AssemblyCulture("")]
 
 // Version information for an assembly
-[assembly: AssemblyVersion("13.12.17.2")]
-[assembly: AssemblyFileVersion("13.12.17.2")]
+[assembly: AssemblyVersion("13.12.18.0")]
+[assembly: AssemblyFileVersion("13.12.18.0")]
