@@ -11,6 +11,6 @@ namespace Barricade.Tests
         public string Username { get; set; }
         public string PasswordHash { get; set; }
         public string PasswordSalt { get; set; }
-        public List<IClaim> Claims { get; set; }
+        public IEnumerable<IClaim> Claims { get; set; }
     }
 }

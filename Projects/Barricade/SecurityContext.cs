@@ -7,6 +7,8 @@
  */
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http.Headers;
 using System.Threading;
 using Utopia.Security.Cryptography;
@@ -57,7 +59,7 @@ namespace Barricade
 
         /// <summary>
         /// Generates a bearer token for the specified user, and caches the
-        /// associated access token for future access.
+        /// associated claims for future reference.
         /// </summary>
         /// <param name="user">The user to login.</param>
         /// <returns>A unique bearer token.</returns>
@@ -66,7 +68,7 @@ namespace Barricade
             if (user == null) return null;
 
             Logout(user.AccessToken);
-            Cache.Add(user.AccessToken, user, AccessTokenCacheDuration, true);
+            Cache.Add(user.AccessToken, user.Claims.ToList(), AccessTokenCacheDuration, true);
 
             return new TokenRequestResponse {
                 access_token = GenerateBearerToken(user.AccessToken),
@@ -75,15 +77,23 @@ namespace Barricade
         }
 
         /// <summary>
-        /// Removes the user, associated with the specified access token,
-        /// from the cache. This should be coupled with a method that
-        /// invalidates the token on the application side (e.g., remove
-        /// it from the database).
+        /// Removes the specified access token from the cache. This should be coupled with 
+        /// a method that invalidates the token on the application side (e.g., remove it 
+        /// from the database).
         /// </summary>
         /// <param name="accessToken">The access token.</param>
         public static void Logout(string accessToken)
         {
             Cache.Remove(accessToken);
+        }
+
+        /// <summary>
+        /// Updates the cached claims associated with the specified user.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        public static void UpdateClaims(IClaimUser user)
+        {
+            Cache.Store[user.AccessToken] = user.Claims.ToList();
         }
 
         /// <summary>
@@ -96,7 +106,7 @@ namespace Barricade
         {
             if (String.IsNullOrWhiteSpace(accessToken)) return false;
 
-            var user = Cache.Get<IClaimUser>(accessToken);
+            var user = Cache.Get<object>(accessToken);
             if (user != null) return true;
 
             return Login(getUser(accessToken)) != null;
@@ -183,8 +193,8 @@ namespace Barricade
         /// <returns><c>true</c> if the access token is authorized; otherwise <c>false</c>.</returns>
         public static bool HasClaim(string accessToken, IClaim claim)
         {
-            var user = Cache.Get<IClaimUser>(accessToken);
-            return user.Claims.Contains(claim);
+            var claims = Cache.Get<List<IClaim>>(accessToken);
+            return claims.Any(c => c.Type == claim.Type && c.Value == claim.Value);
         }
 
         /// <summary>

@@ -16,6 +16,6 @@ namespace Barricade
         string PasswordHash { get; }
         string PasswordSalt { get; }
 
-        List<IClaim> Claims { get; set; }
+        IEnumerable<IClaim> Claims { get; }
     }
 }
