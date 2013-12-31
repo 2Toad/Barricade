@@ -55,17 +55,8 @@ namespace Barricade
             if (SkipAuthorization(actionContext)) return;
 
             var controller = (IClaimController)actionContext.ControllerContext.Controller;
-            if (!SecurityContext.IsAuthorized(actionContext.Request.Headers.Authorization, Claim, controller.GetUserByAccessToken)) 
-                HandleUnauthorizedRequest(actionContext);
-        }
-
-        /// <summary>
-        /// Handles unauthorized requests.
-        /// </summary>
-        /// <param name="actionContext">The action context.</param>
-        private static void HandleUnauthorizedRequest(HttpActionContext actionContext)
-        {
-            actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(HttpStatusCode.Unauthorized, "Request Not Authorized");
+            var status = SecurityContext.IsAuthorized(actionContext.Request.Headers.Authorization, Claim, controller.GetUserByAccessToken);
+            if (status != HttpStatusCode.OK) actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(status, "Unauthorized");
         }
 
         /// <summary>

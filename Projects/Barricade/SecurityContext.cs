@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Threading;
 using Utopia.Security.Cryptography;
@@ -141,12 +142,13 @@ namespace Barricade
         /// <param name="authorization">The authentication header.</param>
         /// <param name="claim">The required claim.</param>
         /// <param name="getUser">The delegate that will be called if the user associated with the access token is not cached.</param>
-        /// <returns><c>true</c> when authenticatd and authorized; otherwise <c>false</c>.</returns>
-        public static bool IsAuthorized(AuthenticationHeaderValue authorization, IClaim claim, Func<string, IClaimUser> getUser)
+        /// <returns><c>200</c> when authenticated and authorized; <c>401</c> when unauthenticated; 403 when unauthorized.</returns>
+        public static HttpStatusCode IsAuthorized(AuthenticationHeaderValue authorization, IClaim claim, Func<string, IClaimUser> getUser)
         {
             var accessToken = GetAccessToken(authorization);
-            return ValidAccessToken(accessToken, getUser)
-                && (claim == null || HasClaim(accessToken, claim));
+            if (!ValidAccessToken(accessToken, getUser)) return HttpStatusCode.Unauthorized;
+
+            return claim == null || HasClaim(accessToken, claim) ? HttpStatusCode.OK : HttpStatusCode.Forbidden;
         }
 
         /// <summary>
