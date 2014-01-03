@@ -14,13 +14,13 @@ namespace Barricade
 {
     public class Credentials
     {
-        public DateTime? AccessTokenExpiration { get; set; }
+        public DateTime AccessTokenExpiration { get; set; }
         public List<IClaim> Claims { get; set; }
 
         public static Credentials From(IClaimUser user)
         {
             return new Credentials {
-                AccessTokenExpiration = user.AccessTokenExpiration,
+                AccessTokenExpiration = user.AccessTokenExpiration ?? DateTime.MinValue,
                 Claims = user.Claims.ToList()
             };
         }
