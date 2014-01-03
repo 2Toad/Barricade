@@ -7,7 +7,6 @@
  */
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
@@ -59,8 +58,8 @@ namespace Barricade
         }
 
         /// <summary>
-        /// Generates a bearer token for the specified user, and caches the
-        /// associated claims for future reference.
+        /// Generates a bearer token for the specified user, and caches the specified <paramref name="user"/>'s 
+        /// credentials for future reference.
         /// </summary>
         /// <param name="user">The user to login.</param>
         /// <returns>A unique bearer token.</returns>
@@ -69,7 +68,7 @@ namespace Barricade
             if (user == null) return null;
 
             Logout(user.AccessToken);
-            Cache.Add(user.AccessToken, user.Claims.ToList(), AccessTokenCacheDuration, true);
+            Cache.Add(user.AccessToken, Credentials.From(user), AccessTokenCacheDuration, true);
 
             return new TokenRequestResponse {
                 access_token = GenerateBearerToken(user.AccessToken),
@@ -89,12 +88,12 @@ namespace Barricade
         }
 
         /// <summary>
-        /// Updates the cached claims associated with the specified user.
+        /// Updates the cached credentials associated with the specified <paramref name="user"/>.
         /// </summary>
         /// <param name="user">The user.</param>
-        public static void UpdateClaims(IClaimUser user)
+        public static void UpdateCredentials(IClaimUser user)
         {
-            Cache.Store[user.AccessToken] = user.Claims.ToList();
+            Cache.Store[user.AccessToken] = Credentials.From(user);
         }
 
         /// <summary>
@@ -102,15 +101,18 @@ namespace Barricade
         /// </summary>
         /// <param name="accessToken">The access token.</param>
         /// <param name="getUser">The delegate that will be called if the user associated with the access token is not cached.</param>
-        /// <returns><c>true</c> if a user is associated with the access token; otherwise <c>false</c>.</returns>
+        /// <returns>
+        /// <c>true</c> if a user is associated with the access token and the access token hasn't expired; otherwise <c>false</c>.
+        /// </returns>
         public static bool ValidAccessToken(string accessToken, Func<string, IClaimUser> getUser)
         {
             if (String.IsNullOrWhiteSpace(accessToken)) return false;
+            
+            var credentials = Cache.Get<Credentials>(accessToken);
+            if (credentials != null) return credentials.AccessTokenExpiration > DateTime.UtcNow;
 
-            var user = Cache.Get<object>(accessToken);
-            if (user != null) return true;
-
-            return Login(getUser(accessToken)) != null;
+            var tokenResponse = Login(getUser(accessToken));
+            return tokenResponse != null && tokenResponse.expires_in > 0;
         }
 
         /// <summary>
@@ -195,8 +197,8 @@ namespace Barricade
         /// <returns><c>true</c> if the access token is authorized; otherwise <c>false</c>.</returns>
         public static bool HasClaim(string accessToken, IClaim claim)
         {
-            var claims = Cache.Get<List<IClaim>>(accessToken);
-            return claims.Any(c => c.Type == claim.Type && c.Value == claim.Value);
+            var credentials = Cache.Get<Credentials>(accessToken);
+            return credentials.Claims.Any(c => c.Type == claim.Type && c.Value == claim.Value);
         }
 
         /// <summary>

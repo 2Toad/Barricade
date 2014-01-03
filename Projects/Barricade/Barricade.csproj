@@ -28,6 +28,7 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>bin\Release\Barricade.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
@@ -62,6 +63,7 @@
       <Link>Properties\Assembly.cs</Link>
     </Compile>
     <Compile Include="Cache.cs" />
+    <Compile Include="Credentials.cs" />
     <Compile Include="IAccessToken.cs" />
     <Compile Include="IClaimController.cs" />
     <Compile Include="TokenRequestResponse.cs" />
