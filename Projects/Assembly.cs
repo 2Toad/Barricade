@@ -14,10 +14,11 @@ using System.Reflection;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("2Toad, LLC.")]
 [assembly: AssemblyProduct("Barricade")]
+[assembly: AssemblyDescription("A lightweight membership system for ASP.NET Web API")]
 [assembly: AssemblyCopyright("Copyright ©2013 2Toad, LLC.")]
 [assembly: AssemblyTrademark("2Toad")]
 [assembly: AssemblyCulture("")]
 
 // Version information for an assembly
-[assembly: AssemblyVersion("14.1.2.0")]
-[assembly: AssemblyFileVersion("14.1.2.0")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
