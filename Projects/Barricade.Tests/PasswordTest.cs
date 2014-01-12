@@ -10,7 +10,7 @@ namespace Barricade.Tests
         {            
             var passwordHash = SecurityContext.GeneratePasswordHash("Foo", "Bar");
             Assert.IsNotNull(passwordHash);
-            Assert.AreEqual(passwordHash.Length, 32);
+            Assert.AreEqual(passwordHash.Length, 88);
         }
 
         [Test]

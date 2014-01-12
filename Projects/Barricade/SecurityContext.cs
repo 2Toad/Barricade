@@ -11,13 +11,18 @@ using System.Linq;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Threading;
-using Utopia.Security.Cryptography;
+using Rijndael256;
 
 namespace Barricade
 {
     public static class SecurityContext
     {
         #region Properties
+
+        /// <summary>
+        /// The number of iterations used to generate password hashes.
+        /// </summary>
+        public static int PasswordIterations { get; private set; }
 
         /// <summary>
         /// The pepper used to generate password hashes.
@@ -45,12 +50,14 @@ namespace Barricade
         /// <summary>
         /// Configures the security context with application specific settings.
         /// </summary>
+        /// <param name="passwordIterations">The number of iterations used to generate password hashes. This should be a minimum of 5000.</param>
         /// <param name="passwordPepper">The pepper used to generate password hashes. This should be a minimum of 128-bits.</param>
         /// <param name="bearerTokenKey">The encryption key used to secure bearer tokens. This should be a minimum of 128-bits.</param>
         /// <param name="accessTokenHeader">The header used to verify the authenticity of access tokens.</param>
         /// <param name="accessTokenCacheDuration">The number of minutes authenticated access tokens should remain cached.</param>
-        public static void Configure(string passwordPepper, string bearerTokenKey, string accessTokenHeader, int accessTokenCacheDuration)
+        public static void Configure(int passwordIterations, string passwordPepper, string bearerTokenKey, string accessTokenHeader, int accessTokenCacheDuration)
         {
+            PasswordIterations = passwordIterations;
             PasswordPepper = passwordPepper;
             BearerTokenKey = bearerTokenKey;
             AccessTokenHeader = accessTokenHeader;
@@ -116,14 +123,15 @@ namespace Barricade
         }
 
         /// <summary>
-        /// Generates a 128-bit MD5 HMAC using the specified password, salt, and application pepper.
+        /// Generates a 256-bit PBKDF2 hash using the specified password, salt, and application pepper.
         /// </summary>
         /// <param name="password">The password to hash.</param>
         /// <param name="passwordSalt">The salt for the hash.</param>
-        /// <returns>A 128-bit hash.</returns>
+        /// <returns>The 88-byte Base64 encoded hash.</returns>
         public static string GeneratePasswordHash(string password, string passwordSalt)
         {
-            return Md5.Hmac(password, Md5.Hmac(passwordSalt, PasswordPepper));
+            var hash = Hash.Pbkdf2(password, passwordSalt + PasswordPepper, PasswordIterations);
+            return Convert.ToBase64String(hash);
         }
 
         /// <summary>
@@ -165,7 +173,7 @@ namespace Barricade
 
             try
             {
-                var token = Rijndael.Decrypt(bearerToken, BearerTokenKey);
+                var token = Rijndael.Decrypt(bearerToken, BearerTokenKey, KeySize.Aes256);
                 return token.StartsWith(AccessTokenHeader)
                     ? token.Remove(0, AccessTokenHeader.Length)
                     : null;
@@ -217,7 +225,7 @@ namespace Barricade
         /// <returns>A Bearer token.</returns>
         public static string GenerateBearerToken(string accessToken)
         {
-            return Rijndael.Encrypt(AccessTokenHeader + accessToken, BearerTokenKey);
+            return Rijndael.Encrypt(AccessTokenHeader + accessToken, BearerTokenKey, KeySize.Aes256);
         }
 
         /// <summary>

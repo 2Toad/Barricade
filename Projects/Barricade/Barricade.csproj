@@ -34,6 +34,9 @@
     <Reference Include="Newtonsoft.Json, Version=4.5.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.4.5.11\lib\net40\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Rijndael256">
+      <HintPath>..\packages\Rijndael256.1.0.0.0\lib\net40\Rijndael256.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net.Http" />
@@ -51,12 +54,6 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Utopia">
-      <HintPath>..\..\Solutions\packages\Utopia.13.10.19.0\lib\net45\Utopia.dll</HintPath>
-    </Reference>
-    <Reference Include="Utopia.Security">
-      <HintPath>..\..\Solutions\packages\Utopia.Security.13.10.19.0\lib\net45\Utopia.Security.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="..\Assembly.cs">
