@@ -201,6 +201,19 @@ namespace Barricade
         /// the specified claim.
         /// </summary>
         /// <param name="accessToken">The access token.</param>
+        /// <param name="claimType">The claim type.</param>
+        /// <param name="claimValue">The value of the claim type.</param>
+        /// <returns><c>true</c> if the access token is authorized; otherwise <c>false</c>.</returns>
+        public static bool HasClaim(string accessToken, string claimType, string claimValue)
+        {
+            return HasClaim(accessToken, new Claim {Type = claimType, Value = claimValue});
+        }
+
+        /// <summary>
+        /// Determines whether the specified access token is authorized to access
+        /// the specified claim.
+        /// </summary>
+        /// <param name="accessToken">The access token.</param>
         /// <param name="claim">The claim.</param>
         /// <returns><c>true</c> if the access token is authorized; otherwise <c>false</c>.</returns>
         public static bool HasClaim(string accessToken, IClaim claim)
