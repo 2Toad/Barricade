@@ -65,8 +65,8 @@
     <Compile Include="Credentials.cs" />
     <Compile Include="IAccessToken.cs" />
     <Compile Include="IClaimController.cs" />
-    <Compile Include="TokenRequestResponse.cs" />
-    <Compile Include="TokenRequestCredentials.cs" />
+    <Compile Include="AccessTokenResponse.cs" />
+    <Compile Include="AccessTokenRequest.cs" />
     <Compile Include="SecurityContext.cs" />
     <Compile Include="Claim.cs" />
     <Compile Include="IClaimUser.cs" />

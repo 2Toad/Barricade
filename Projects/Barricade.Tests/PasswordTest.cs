@@ -21,9 +21,9 @@ namespace Barricade.Tests
             var passwordHash = SecurityContext.GeneratePasswordHash(password, passwordSalt);
 
             var user = new ClaimUser { PasswordHash = passwordHash, PasswordSalt = passwordSalt };
-            var credentials = new TokenRequestCredentials { Password = password, Username = "Foo" };
+            var accessTokenRequest = new AccessTokenRequest { Password = password, Username = "Foo" };
 
-            var valid = SecurityContext.ValidatePassword(user, credentials);
+            var valid = SecurityContext.ValidatePassword(user, accessTokenRequest);
             Assert.IsTrue(valid);
         }
     }

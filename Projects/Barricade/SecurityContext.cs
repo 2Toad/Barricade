@@ -70,14 +70,14 @@ namespace Barricade
         /// </summary>
         /// <param name="user">The user to login.</param>
         /// <returns>A unique bearer token.</returns>
-        public static TokenRequestResponse Login(IClaimUser user)
+        public static AccessTokenResponse Login(IClaimUser user)
         {
             if (user == null) return null;
 
             Logout(user.AccessToken);
             Cache.Add(user.AccessToken, Credentials.From(user), AccessTokenCacheDuration, true);
 
-            return new TokenRequestResponse {
+            return new AccessTokenResponse {
                 access_token = GenerateBearerToken(user.AccessToken),
                 expires_in = (long)(user.AccessTokenExpiration - DateTime.UtcNow).Value.TotalSeconds
             };
@@ -135,14 +135,14 @@ namespace Barricade
         }
 
         /// <summary>
-        /// Validates the specified credentials against the specified user.
+        /// Validates the specified password.
         /// </summary>
         /// <param name="user">The user.</param>
-        /// <param name="credentials">The credentials to validate.</param>
-        /// <returns><c>true</c> if the credentials match the user; otherwise <c>false</c>.</returns>
-        public static bool ValidatePassword(IClaimUser user, TokenRequestCredentials credentials)
+        /// <param name="accessTokenRequest">The access token request.</param>
+        /// <returns><c>true</c> if the password is valid; otherwise <c>false</c>.</returns>
+        public static bool ValidatePassword(IClaimUser user, AccessTokenRequest accessTokenRequest)
         {
-            return user.PasswordHash == GeneratePasswordHash(credentials.Password, user.PasswordSalt);
+            return user.PasswordHash == GeneratePasswordHash(accessTokenRequest.Password, user.PasswordSalt);
         }
 
         /// <summary>
