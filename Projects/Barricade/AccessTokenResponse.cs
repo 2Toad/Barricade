@@ -27,5 +27,13 @@ namespace Barricade
         /// The lifetime in seconds of the access token.
         /// </summary>
         public long expires_in { get; set; }
+
+        /// <summary>
+        /// An optional payload to return with the response.
+        /// </summary>
+        /// <remarks>
+        /// This property is not part of RFC 6749
+        /// </remarks>
+        public object Payload { get; set; }
     }
 }
