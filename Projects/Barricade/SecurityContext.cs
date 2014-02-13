@@ -79,6 +79,7 @@ namespace Barricade
 
             return new AccessTokenResponse {
                 access_token = GenerateBearerToken(user.AccessToken),
+                token_type = "Bearer",
                 expires_in = (long)(user.AccessTokenExpiration - DateTime.UtcNow).Value.TotalSeconds
             };
         }

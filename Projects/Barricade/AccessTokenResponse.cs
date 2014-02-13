@@ -22,7 +22,7 @@ namespace Barricade
         /// <summary>
         /// The type of the token issued.
         /// </summary>
-        public string token_type = "Bearer";
+        public string token_type { get; set; }
         /// <summary>
         /// The lifetime in seconds of the access token.
         /// </summary>
