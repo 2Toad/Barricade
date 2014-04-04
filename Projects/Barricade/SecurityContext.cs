@@ -12,6 +12,7 @@ using System.Net;
 using System.Net.Http.Headers;
 using System.Threading;
 using Rijndael256;
+using System.Threading.Tasks;
 
 namespace Barricade
 {
@@ -112,14 +113,14 @@ namespace Barricade
         /// <returns>
         /// <c>true</c> if a user is associated with the access token and the access token hasn't expired; otherwise <c>false</c>.
         /// </returns>
-        public static bool ValidAccessToken(string accessToken, Func<string, IClaimUser> getUser)
+        public static async Task<bool> ValidAccessToken(string accessToken, Func<string, Task<IClaimUser>> getUser)
         {
             if (String.IsNullOrWhiteSpace(accessToken)) return false;
             
             var credentials = Cache.Get<Credentials>(accessToken);
             if (credentials != null) return credentials.AccessTokenExpiration > DateTime.UtcNow;
 
-            var tokenResponse = Login(getUser(accessToken));
+            var tokenResponse = Login(await getUser(accessToken));
             return tokenResponse != null && tokenResponse.expires_in > 0;
         }
 
@@ -154,10 +155,10 @@ namespace Barricade
         /// <param name="claim">The required claim.</param>
         /// <param name="getUser">The delegate that will be called if the user associated with the access token is not cached.</param>
         /// <returns><c>200</c> when authenticated and authorized; <c>401</c> when unauthenticated; 403 when unauthorized.</returns>
-        public static HttpStatusCode IsAuthorized(AuthenticationHeaderValue authorization, IClaim claim, Func<string, IClaimUser> getUser)
+        public static async Task<HttpStatusCode> IsAuthorized(AuthenticationHeaderValue authorization, IClaim claim, Func<string, Task<IClaimUser>> getUser)
         {
             var accessToken = GetAccessToken(authorization);
-            if (!ValidAccessToken(accessToken, getUser)) return HttpStatusCode.Unauthorized;
+            if (!await ValidAccessToken(accessToken, getUser)) return HttpStatusCode.Unauthorized;
 
             return claim == null || HasClaim(accessToken, claim) ? HttpStatusCode.OK : HttpStatusCode.Forbidden;
         }

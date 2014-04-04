@@ -6,10 +6,12 @@
  * http://2toad.com/Project/Barricade/License
  */
 
+using System.Threading.Tasks;
+
 namespace Barricade
 {
     public interface IClaimController
     {
-        IClaimUser GetUserByAccessToken(string accessToken);
+        Task<IClaimUser> GetUserByAccessToken(string accessToken);
     }
 }

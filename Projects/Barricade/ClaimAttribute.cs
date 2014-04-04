@@ -10,6 +10,8 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Web.Http;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
@@ -50,12 +52,12 @@ namespace Barricade
         /// the necessary <see cref="Claim"/> (if defined).
         /// </summary>
         /// <param name="actionContext">The action context.</param>
-        public override void OnAuthorization(HttpActionContext actionContext)
+        public override async Task OnAuthorizationAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
         {
             if (SkipAuthorization(actionContext)) return;
 
             var controller = (IClaimController)actionContext.ControllerContext.Controller;
-            var status = SecurityContext.IsAuthorized(actionContext.Request.Headers.Authorization, Claim, controller.GetUserByAccessToken);
+            var status = await SecurityContext.IsAuthorized(actionContext.Request.Headers.Authorization, Claim, controller.GetUserByAccessToken);
             if (status != HttpStatusCode.OK) actionContext.Response = actionContext.ControllerContext.Request.CreateErrorResponse(status, "Unauthorized");
         }
 
