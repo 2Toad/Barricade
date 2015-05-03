@@ -55,7 +55,7 @@
       ZipFileName="$(WorkspaceDir)\$(ProjectName)-$(Version).zip" 
       Files="@(BinaryFiles)"
       Flatten="true"
-      RootDirectory="Barricade"
+      ArchiveFolder="Barricade"
       ZipLevel="9" />
   </Target>
   
@@ -78,7 +78,7 @@
       ZipFileName="$(WorkspaceDir)\$(ProjectName)-$(Version)-src.zip" 
       Files="@(SourceFiles)"
       WorkingDirectory="$(RootDir)"
-      RootDirectory="Barricade"
+      ArchiveFolder="Barricade"
       ZipLevel="9" />
   </Target>
 
