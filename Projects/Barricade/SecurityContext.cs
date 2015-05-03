@@ -137,14 +137,25 @@ namespace Barricade
         }
 
         /// <summary>
-        /// Validates the specified password.
+        /// Validates the password in the specified <see cref="AccessTokenRequest"/>.
         /// </summary>
         /// <param name="user">The user.</param>
         /// <param name="accessTokenRequest">The access token request.</param>
         /// <returns><c>true</c> if the password is valid; otherwise <c>false</c>.</returns>
         public static bool ValidatePassword(IClaimUser user, AccessTokenRequest accessTokenRequest)
         {
-            return user.PasswordHash == GeneratePasswordHash(accessTokenRequest.Password, user.PasswordSalt);
+            return ValidatePassword(user, accessTokenRequest.Password);
+        }
+
+        /// <summary>
+        /// Validates the specified password.
+        /// </summary>
+        /// <param name="user">The user.</param>
+        /// <param name="password">The password.</param>
+        /// <returns><c>true</c> if the password is valid; otherwise <c>false</c>.</returns>
+        public static bool ValidatePassword(IClaimUser user, string password)
+        {
+            return user.PasswordHash == GeneratePasswordHash(password, user.PasswordSalt);
         }
 
         /// <summary>
