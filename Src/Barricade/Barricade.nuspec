@@ -24,6 +24,12 @@
         <dependency id="Newtonsoft.Json" version="9.0.1" />
         <dependency id="Rijndael256" version="1.0.1.0" />
       </group>
+      <group targetFramework=".NETFramework4.6.1">
+        <dependency id="Microsoft.AspNet.WebApi.Client" version="5.2.3" />
+        <dependency id="Microsoft.AspNet.WebApi.Core" version="5.2.3" />
+        <dependency id="Newtonsoft.Json" version="9.0.1" />
+        <dependency id="Rijndael256" version="1.0.1.0" />
+      </group>
     </dependencies>
   </metadata>
 </package>
