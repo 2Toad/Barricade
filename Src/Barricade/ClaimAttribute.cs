@@ -52,6 +52,7 @@ namespace Barricade
         /// the necessary <see cref="Claim"/> (if defined).
         /// </summary>
         /// <param name="actionContext">The action context.</param>
+        /// <param name="cancellationToken">The cancellation token.</param>
         public override async Task OnAuthorizationAsync(HttpActionContext actionContext, CancellationToken cancellationToken)
         {
             if (SkipAuthorization(actionContext)) return;
