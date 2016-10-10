@@ -51,6 +51,7 @@
     <Compile Include="BaseTest.cs" />
     <Compile Include="ClaimUser.cs" />
     <Compile Include="OAuthTest.cs" />
+    <Compile Include="CacheTest.cs" />
     <Compile Include="PasswordTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
