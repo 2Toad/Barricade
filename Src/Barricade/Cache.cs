@@ -7,7 +7,7 @@
  */
 
 using System;
-using System.Web;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace Barricade
 {
@@ -16,31 +16,49 @@ namespace Barricade
     /// </summary>
     public static class Cache
     {
+        static Cache()
+        {
+            Header = Guid.NewGuid().ToString("N");
+            Store = new MemoryCache(new MemoryCacheOptions());
+        }
+
         /// <summary>
         /// A unique header to prevent key collisions in the cache collection.
         /// </summary>
-        private static readonly string Header = Guid.NewGuid().ToString("N");
+        private static readonly string Header;
 
         /// <summary>
         /// A reference to the application cache.
         /// </summary>
-        public static System.Web.Caching.Cache Store { get { return HttpRuntime.Cache; } }
+        private static readonly MemoryCache Store;
 
         /// <summary>
-        /// Adds an item to the cache.
+        /// The number of entries in the cache.
+        /// </summary>
+        public static int Count => Store.Count;
+
+        /// <summary>
+        /// Adds an item to the cache, replacing the existing item if the key already exists.
         /// </summary>
         /// <param name="key">The key used to reference the item.</param>
         /// <param name="value">The item to add to the cache.</param>
         /// <param name="expiration">The number of minutes the item will remain cached.</param>
         /// <param name="slidingExpiration">When true, the expiration is reset each time the item is accessed.</param>
-        public static void Add(string key, object value, int expiration, bool slidingExpiration)
+        public static void Add(string key, object value, int expiration, bool slidingExpiration = true)
         {
-            Store.Insert(
-                Header + key, 
-                value, 
-                null,
-                slidingExpiration ? System.Web.Caching.Cache.NoAbsoluteExpiration : DateTime.UtcNow.AddMinutes(expiration),
-                slidingExpiration ? new TimeSpan(0, expiration, 0) : System.Web.Caching.Cache.NoSlidingExpiration
+            var offset = TimeSpan.FromMinutes(expiration);
+            var options = new MemoryCacheEntryOptions();
+
+            if (slidingExpiration) {
+                options.SetSlidingExpiration(offset);
+            } else {
+                options.SetAbsoluteExpiration(offset);
+            }
+
+            Store.Set(
+                Header + key,
+                value,
+                options
             );
         }
 
@@ -48,10 +66,10 @@ namespace Barricade
         /// Retrieves the specified item from the cache.
         /// </summary>
         /// <param name="key">The key used to reference the item.</param>
-        /// <returns>The item associated with the key.</returns>
+        /// <returns>The item associated with the key, or default(T) if the key doesn't exist.</returns>
         public static T Get<T>(string key)
         {
-            return (T)Store.Get(Header + key);
+            return Store.Get<T>(Header + key);
         }
 
         /// <summary>
@@ -63,25 +81,27 @@ namespace Barricade
         /// <param name="callback">The delegate that will be called if the item does not exist in the cache.</param>
         /// <param name="expiration">The number of minutes the item will remain cached.</param>
         /// <param name="slidingExpiration">When true, the expiration is reset each time the item is accessed.</param>
-        /// <returns>The item associated with the key.</returns>
-        public static T Get<T>(string key, Func<T> callback, int expiration, bool slidingExpiration) where T : class
+        /// <returns>The item associated with the key, or default(T) if the key doesn't exist.</returns>
+        public static T GetOrCreate<T>(string key, Func<T> callback, int expiration, bool slidingExpiration = true)
         {
-            var item = Store.Get(Header + key);
-            if (item != null) return (T)item;
+            T item;
+            if (TryGet(key, out item)) return item;
 
             item = callback();
-            if (item != null) Add(Header + key, item, expiration, slidingExpiration);
-            return item as T;
+            Add(key, item, expiration, slidingExpiration);
+            return item;
         }
 
         /// <summary>
-        /// Removes the specified item from the cache.
+        /// Retrieves the specified item from the cache.
         /// </summary>
+        /// <typeparam name="T">The item type.</typeparam>
         /// <param name="key">The key used to reference the item.</param>
-        /// <returns>The item associated with the key.</returns>
-        public static T Remove<T>(string key)
+        /// <param name="value">The item associated with the key.</param>
+        /// <returns>True if the key exists.</returns>
+        public static bool TryGet<T>(string key, out T value)
         {
-            return (T)Store.Remove(Header + key);
+            return Store.TryGetValue(Header + key, out value);
         }
 
         /// <summary>
@@ -91,6 +111,18 @@ namespace Barricade
         public static void Remove(string key)
         {
             Store.Remove(Header + key);
+        }
+
+        /// <summary>
+        /// Gets the specified item and removes it from the cache.
+        /// </summary>
+        /// <param name="key">The key used to reference the item.</param>
+        /// <returns>The item associated with the key, or default(T) if the key doesn't exist.</returns>
+        public static T Pop<T>(string key)
+        {
+            T item;
+            if (TryGet(key, out item)) Remove(key);
+            return item;
         }
     }
 }

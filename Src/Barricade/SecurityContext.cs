@@ -76,7 +76,7 @@ namespace Barricade
             if (user == null) return null;
 
             Logout(user.AccessToken);
-            Cache.Add(user.AccessToken, Credentials.From(user), AccessTokenCacheDuration, true);
+            Cache.Add(user.AccessToken, Credentials.From(user), AccessTokenCacheDuration);
 
             return new AccessTokenResponse {
                 access_token = GenerateBearerToken(user.AccessToken),
@@ -102,7 +102,7 @@ namespace Barricade
         /// <param name="user">The user.</param>
         public static void UpdateCredentials(IClaimUser user)
         {
-            Cache.Store[user.AccessToken] = Credentials.From(user);
+            Cache.Add(user.AccessToken, Credentials.From(user), AccessTokenCacheDuration);
         }
 
         /// <summary>
