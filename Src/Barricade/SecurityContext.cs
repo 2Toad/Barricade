@@ -78,10 +78,14 @@ namespace Barricade
             Logout(user.AccessToken);
             Cache.Add(user.AccessToken, Credentials.From(user), AccessTokenCacheDuration);
 
+            var now = DateTime.UtcNow;
+            var tokenExpirationDate = user.AccessTokenExpiration ?? now;
+            var tokenDuration = tokenExpirationDate.Subtract(now).TotalSeconds;
+
             return new AccessTokenResponse {
                 access_token = GenerateBearerToken(user.AccessToken),
                 token_type = "Bearer",
-                expires_in = (long)(user.AccessTokenExpiration - DateTime.UtcNow).Value.TotalSeconds
+                expires_in = (long)tokenDuration
             };
         }
 
