@@ -7,10 +7,11 @@
  */
 
 using System.Threading.Tasks;
+using System.Web.Http.Controllers;
 
 namespace Barricade
 {
-    public interface IClaimController
+    public interface IClaimController : IHttpController
     {
         Task<IClaimUser> GetUserByAccessToken(string accessToken);
     }
