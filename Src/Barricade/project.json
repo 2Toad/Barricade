@@ -1,0 +1,41 @@
+﻿{
+  "title": "Barricade",
+  "version": "2.0.0",
+
+  "authors": [ "2Toad, LLC" ],
+  "description": "Barricade is a lightweight membership system. An ASP.NET Web API security library that implements OAuth 2 authentication and claim based authorizations.",
+  "copyright": "Copyright (C)2013 2Toad, LLC. All rights reserved.",
+  "packOptions": {
+    "owners": [ "2Toad, LLC" ],
+    "licenseUrl": "https://github.com/2Toad/Barricade/blob/master/LICENSE",
+    "projectUrl": "https://github.com/2Toad/Barricade",
+    "summary": "Users and claims are interface driven, making it a breeze to integrate Barricade into existing applications, and a joy to develop POCO architectures with EF, NHibernate, or other.",
+    "tags": [
+      "2Toad",
+      "Barricade",
+      "Security",
+      "Password",
+      "Claims",
+      "OAuth",
+      "Authentication",
+      "Authorization",
+      "Membership",
+      "Users"
+    ]
+  },
+
+  "dependencies": {
+    "Microsoft.AspNet.WebApi.Core": "5.2.3",
+    "CacheManager.Microsoft.Extensions.Caching.Memory": "0.9.1",
+    "Rijndael256": "1.0.1"
+  },
+
+  "frameworks": {
+    "net451": {},
+    "net461": {}
+  },
+
+  "runtimes": {
+    "win": {}
+  }
+}

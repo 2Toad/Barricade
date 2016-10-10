@@ -5,14 +5,13 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Barricade", "Barricade\Barricade.csproj", "{23D110E8-7084-40F9-A5A8-BA4102EC73D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Barricade.Tests", "Barricade.Tests\Barricade.Tests.csproj", "{3B92E254-0995-49FB-8EBF-99006D35BBC1}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{0DD07E15-C676-4D1E-A9FE-8C4E06CDD438}"
 	ProjectSection(SolutionItems) = preProject
-		Barricade\Barricade.nuspec = Barricade\Barricade.nuspec
 		..\LICENSE = ..\LICENSE
 		..\README.md = ..\README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Barricade.Tests", "Barricade.Tests\Barricade.Tests.csproj", "{3B92E254-0995-49FB-8EBF-99006D35BBC1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
