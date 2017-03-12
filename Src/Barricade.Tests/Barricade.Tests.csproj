@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Barricade.Tests</RootNamespace>
     <AssemblyName>Barricade.Tests</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -40,9 +40,6 @@
     <Reference Include="System.Net.Http" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="..\Assembly.cs">
-      <Link>Properties\Assembly.cs</Link>
-    </Compile>
     <Compile Include="BaseTest.cs" />
     <Compile Include="ClaimUser.cs" />
     <Compile Include="OAuthTest.cs" />

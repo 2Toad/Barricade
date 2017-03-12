@@ -9,15 +9,15 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-// General Information about an assembly is controlled through the following 
-// set of attributes. Change these attribute values to modify the information
-// associated with an assembly.
 [assembly: AssemblyTitle("Barricade.Tests")]
-
-// Setting ComVisible to false makes the types in this assembly not visible 
-// to COM components.  If you need to access a type in this assembly from 
-// COM, set the ComVisible attribute to true on that type.
+[assembly: AssemblyDescription("A lightweight authentication system for ASP.NET Web API")]
+[assembly: AssemblyConfiguration("")]
+[assembly: AssemblyCompany("2Toad, LLC")]
+[assembly: AssemblyProduct("Barricade")]
+[assembly: AssemblyCopyright("Copyright ©2013 2Toad, LLC")]
+[assembly: AssemblyTrademark("2Toad")]
+[assembly: AssemblyCulture("")]
 [assembly: ComVisible(false)]
-
-// The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("018a0ab5-0b32-4eab-aec8-54898ef97bc9")]
+[assembly: AssemblyVersion("3.0.0.0")]
+[assembly: AssemblyFileVersion("3.0.0.0")]

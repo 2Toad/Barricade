@@ -1,69 +1,37 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{23D110E8-7084-40F9-A5A8-BA4102EC73D2}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Barricade</RootNamespace>
+    <Description>Barricade is a lightweight membership system. An ASP.NET Web API security library that implements OAuth 2 authentication and claim based authorizations.</Description>
+    <Copyright>Copyright (C)2013 2Toad, LLC. All rights reserved.</Copyright>
+    <AssemblyTitle>Barricade</AssemblyTitle>
+    <VersionPrefix>2.0.0</VersionPrefix>
+    <Authors>2Toad, LLC</Authors>
+    <TargetFrameworks>net451;net462</TargetFrameworks>
     <AssemblyName>Barricade</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
+    <PackageId>Barricade</PackageId>
+    <PackageTags>2Toad;Barricade;Security;Password;Claims;OAuth;Authentication;Authorization;Membership;Users</PackageTags>
+    <PackageProjectUrl>https://github.com/2Toad/Barricade</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/2Toad/Barricade/blob/master/LICENSE</PackageLicenseUrl>
+    <RuntimeIdentifiers>win</RuntimeIdentifiers>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <Version>3.0.0</Version>
+    <GeneratePackageOnBuild>False</GeneratePackageOnBuild>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>bin\Release\Barricade.xml</DocumentationFile>
-  </PropertyGroup>
+
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNet.WebApi.Core" Version="5.2.3" />
+    <PackageReference Include="CacheManager.Microsoft.Extensions.Caching.Memory" Version="0.9.3" />
+    <PackageReference Include="Rijndael256" Version="1.0.1" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net451' ">
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-  <ItemGroup>
-    <Compile Include="..\Assembly.cs">
-      <Link>Properties\Assembly.cs</Link>
-    </Compile>
-    <Compile Include="Cache.cs" />
-    <Compile Include="Credentials.cs" />
-    <Compile Include="IAccessToken.cs" />
-    <Compile Include="IClaimController.cs" />
-    <Compile Include="AccessTokenResponse.cs" />
-    <Compile Include="AccessTokenRequest.cs" />
-    <Compile Include="SecurityContext.cs" />
-    <Compile Include="Claim.cs" />
-    <Compile Include="IClaimUser.cs" />
-    <Compile Include="IClaim.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ClaimAttribute.cs" />
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net462' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="project.json" />
-  </ItemGroup>
-  <ItemGroup />
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
+
 </Project>
