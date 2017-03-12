@@ -1,23 +1,20 @@
-﻿/*
- * Barricade
- * Copyright (C)2013 2Toad, LLC.
- * licensing@2toad.com
- * 
- * http://2toad.com/Project/Barricade/License
- */
-
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle("Barricade.Tests")]
-[assembly: AssemblyDescription("A lightweight authentication system for ASP.NET Web API")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("2Toad, LLC")]
-[assembly: AssemblyProduct("Barricade")]
-[assembly: AssemblyCopyright("Copyright ©2013 2Toad, LLC")]
-[assembly: AssemblyTrademark("2Toad")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("Barricade.Tests")]
+[assembly: AssemblyCopyright("Copyright ©  2017")]
+[assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
+
 [assembly: ComVisible(false)]
-[assembly: Guid("018a0ab5-0b32-4eab-aec8-54898ef97bc9")]
-[assembly: AssemblyVersion("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.0.0")]
+
+[assembly: Guid("b7fddd48-280f-4c65-bcb1-401b87f3461d")]
+
+// [assembly: AssemblyVersion("1.0.*")]
+[assembly: AssemblyVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("1.0.0.0")]
