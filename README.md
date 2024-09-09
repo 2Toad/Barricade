@@ -1,3 +1,7 @@
+> # Archived Repository 🚨
+> **This project is no longer maintained and has been archived. No further issues, PRs, or updates will be made.**
+---
+
 # Barricade
 
 [![NuGet](https://img.shields.io/nuget/v/Barricade.svg?maxAge=2592000)](https://www.nuget.org/packages/Barricade/)
